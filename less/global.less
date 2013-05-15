@@ -31,8 +31,9 @@ a:link, a:visited {
     text-decoration: none;
     .transition(all .4s ease-out);
 }
-a:hover {
+a:hover, a:-webkit-any-link:hover {
     .transition(all .2s ease-out);
+    color:#EF5B31;
 }
 a:-webkit-any-link {
     color:inherit;
@@ -40,22 +41,37 @@ a:-webkit-any-link {
 #header {
     .clearfix;
     width:100%;
-    padding:0 3%;
+    padding:@baseLineHeight/2 @baseLineHeight;
     border-bottom:3px solid skyblue;
     position:fixed;
+    left:0;
+    right:0;
+    top:0;
     background:white;
+    height:@baseLineHeight*3;
     .menu-btn {
         float:right;
+        display:none;
     }
+}
+#logo img {
+    width:50px;
 }
 
 #mainMenu {
-    float:right;
+    position:fixed;
+    top:0;
+    right:@baseLineHeight;
     li {
         float:left;
         font-size:@baseFontSize*1.5;
-        line-height:@baseLineHeight*1.5;
+        line-height:@baseLineHeight*2;
         padding:@baseLineHeight/2;
+        a:link {
+            display:block;
+width:100%;
+height:100%;
+        }
     }
 }
 hr {
@@ -64,6 +80,10 @@ hr {
     height: 4px;
     margin:0;
     border-bottom:1px solid white;
+}
+
+.container.top {
+    margin-top:@baseLineHeight*5;
 }
 
 footer {

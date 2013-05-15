@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<title></title>
+		<meta name="description" content="">
+		<meta name="viewport" content="width=device-width">
+
+    <link rel="stylesheet" href="css/normalize.min.css">
+    <link rel="stylesheet" href="css/main.css">
+    <script type="text/javascript" src="//use.typekit.net/dpv1gvc.js"></script>
+    <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+		<!--[if lt IE 9]>
+			<script src="js/vendor/html5-3.6-respond-1.1.0.min.js"></script>
+		<![endif]-->
+	</head>
+	<body>
+		<!--[if lt IE 7]>
+			<p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
+		<![endif]-->
+
+		<div class="header-container">
+			<header class="wrapper clearfix">
+        <h2 class="logo">
+          <a href=""><img src="img/logo-iiif.png"></a>
+        </h2>
+        <div class="title">
+  				<h1>International Image Interoperability Framework: Image API 1.0</h1>
+          <span class="date">10 August 2012</span>
+        </div>
+<!-- 				<nav>
+					<ul>
+						<li><a href="#">nav ul li a</a></li>
+						<li><a href="#">nav ul li a</a></li>
+						<li><a href="#">nav ul li a</a></li>
+					</ul>
+				</nav>
+ -->			</header>
+		</div>
+
+		<div class="main-container">
+			<div class="main wrapper clearfix">
+        <aside>
+          <h2><a id="toc" name="toc">Table of Contents</a></h2>
+          <ol>
+            <li><a href="#audience">Audience</a></li>
+            <li><a href="#url-syntax">URL Syntax</a>
+              <ol>
+                <li><a href="#url-syntax-image-request">Image Request URL Syntax</a></li>
+                <li><a href="#url-syntax-image-info">Image Information Request URL Syntax</a></li>
+              </ol>
+            </li>
+            <li><a href="#identifier">Identifier</a></li>
+            <li><a href="#parameters">Parameters</a>
+              <ol>
+                <li><a href="#parameters-region">Region</a></li>
+                <li><a href="#parameters-size">Size</a></li>
+                <li><a href="#parameters-rotation">Rotation</a></li>
+                <li><a href="#parameters-quality">Quality</a></li>
+                <li><a href="#parameters-format">Format</a></li>
+                <li><a href="#parameters-order">Order of Implementation</a></li>
+              </ol>
+            </li>
+            <li><a href="#image-info-request">Image Information Request</a></li>
+            <li><a href="#server-responses">Server Responses</a>
+              <ol>
+                <li><a href="#server-responses-successful">Successful Responses</a></li>
+                <li><a href="#server-responses-error">Error Conditions</a></li>
+              </ol>
+            </li>
+            <li><a href="#authentication">Authentication</a></li>
+            <li><a href="#compliance-levels">Compliance Levels</a></li>
+            <li><a href="#url-encoding-and-decoding">URL Encoding and Decoding</a></li>
+            <li><a href="#security-considerations">Security Considerations</a></li>
+          </ol>
+        </aside>
+
+				<article>
+          <header>
+            <h4>Editors</h4>
+            <ul class="editors">
+              <li>Stuart Snydman, Stanford University</li>
+              <li>Simeon Warner, Cornell University</li>
+              <li>Robert Sanderson, Los Alamos National Laboratory</li>
+            </ul>
+            <h4>Authors</h4>
+            <ul class="editors">
+              <li>Ben Albritton, Stanford University</li>
+              <li>Peter James, British Library</li>
+              <li>Neil Jefferies, Oxford University</li>
+              <li>Christopher Jesudurai, Stanford University</li>
+              <li>Sean Martin, British Library</li>
+              <li>Roger Mathisen, National Library of Norway</li>
+              <li>Petter Rønningsen, National Library of Norway</li>
+            </ul>
+          </header>
+
+          <!-- Section: Abstract -->
+          <section>
+						<h2>Abstract</h2>
+						<p>
+              This document describes an API proposed by the International Image Interoperability Framework (IIIF) group for the delivery of images via a standard http request. The IIIF API specifies a web service that returns an image in response to a standard http or https request. The URL can specify the region, size, rotation, quality characteristics and format of the requested image. A URL can also be constructed to request basic technical information about the image to support client applications.  The IIIF API was conceived of to facilitate systematic reuse of image resources in digital image repositories maintained by cultural heritage organizations. The API could be adopted by any image repository or service, and can be used to retrieve static images in response to a properly constructed URL.
+            </p>
+            <p>
+              Please send feedback to <a href="mailto:iiif-discuss@googlegroups.com">iiif-discuss@googlegroups.com</a>
+            </p>
+					</section>
+
+          <!-- Section 1: Audience -->
+					<section>
+						<h2><a id="audience" name="audience">1. Audience</a><a href="#toc" class="link-toc"><img src="img/icon-toc.png"></a></h2>
+            <p>
+              This document is intended for developers building applications that share digital image assets. This includes:
+            </p>
+						<ul>
+              <li>
+                Developers building digital image repositories who would like to offer services for easily sharing digital images with other repositories, web applications, or other software that uses images from the web.
+              </li>
+              <li>
+                Developers building web applications or software that want to retrieve images from compliant repositories.
+              </li>
+              <li>
+                A specifically targeted audience are developers and managers of digital image repositories, web applications and image tools at cultural heritage institutions, like museums, libraries and archives.
+              </li>
+            </ul>
+					</section>
+
+          <!-- Section 2: URL Syntax -->
+					<section>
+						<h2><a id="url-syntax" name="url-syntax">2. URL Syntax</a><a href="#toc" class="link-toc"><img src="img/icon-toc.png"></a></h2>
+						<p>
+              The IIIF Image API can be called in two forms: one to request an image, and a second to request techincal information about the image. Both forms convey the request's information in the path segment of the URI, rather than as query parameters. This makes responses more easily able to be cached, either at the server or by standard web-caching infrastructure. It also permits a minimal implementation using pre-computed files in a matching directory structure.
+            </p>
+            <p>
+              To allow for extension, this specification does not define the behaviour of an implementing server when it receives requests that do not match one of the two request syntaxes below.
+            </p>
+
+            <!-- Section 2.1: Image Request URL Syntax -->
+            <h3><a id="url-syntax-image-request" name="url-syntax-image-request">2.1 Image Request URL Syntax</a><a href="#toc" class="link-toc"><img src="img/icon-toc.png"></a></h3>
+            <p>
+              The IIIF Image API URL for requesting an image MUST conform to the following format:<br/>
+              <pre class="indent">http[s]://server/[prefix/]identifier/region/size/rotation/quality[.format]</pre>
+              where [] delimits components which are optional.
+            </p>
+
+            <p>
+              The URI Template (<a href="http://tools.ietf.org/html/rfc6750" class="ext-link">RFC6750</a>) form is:<br/>
+              <pre class="indent">http://{server}{/prefix}/{identifier}/{region}/{size}/{rotation}/{quality}{.format}</pre>
+              For example:<br/>
+              <pre class="indent">http://www.example.org/image-service/abcd1234/full/full/0/native.jpg</pre>
+            </p>
+            <p>
+              The sections of the Image Request URL include:
+            </p>
+            <table>
+              <tr>
+                <td>http (or https)</td>
+                <td>Indicates the use of the http or https protocol in calling the service.</td>
+              </tr>
+              <tr>
+                <td>server</td>
+                <td>The host server on which the IIIF-compliant image service resides.</td>
+              </tr>
+              <tr>
+                <td>prefix</td>
+                <td>The path on the host server to the IIIF-compliant image service. This prefix is optional, but may be useful when the host server supports multiple services. (note: The prefix MAY contain slashes or constructions that resemble service parameters.)</td>
+              </tr>
+              <tr>
+                <td>identifier</td>
+                <td>The unique identifier of the requested image, expressed as a string. This may be an ark, URN, filename, or other unique identifier. Special characters MUST be URI encoded.</td>
+              </tr>
+              <tr>
+                <td>region, size, rotation, quality, format</td>
+                <td>Parameters defining the characteristics of the returned image. These are described in detail below.</td>
+              </tr>
+            </table>
+            <p>See <a href="#parameters">Section 4 - Image Request Parameters</a>.</p>
+
+            <!-- Section 2.1: Image Information Request URL Syntax -->
+            <h3><a id="url-syntax-image-info" name="url-syntax-image-info">2.2 Image Information Request URL Syntax</a><a href="#toc" class="link-toc"><img src="img/icon-toc.png"></a></h3>
+            <p>
+              The IIIF Image API URL for requesting image information MUST conform to the following format:
+              <pre class="indent">http[s]://server/[prefix/]identifier/info.ext</pre>
+              where [ ] delimits the optional prefix component, "info" is a literal string, and ext is one of "json" or "xml".
+            </p>
+            <p>
+              The URI Template (<a href="http://tools.ietf.org/html/rfc6750" class="ext-link">RFC6750</a>) form is:
+              <pre class="indent">http://{server}{/prefix}/{identifier}/info.{ext}</pre>
+              For example: <br/>
+              <pre class="indent">http://www.example.org/image-service/abcd1234/info.json</pre>
+            </p>
+            <p>
+              See <a href="#image-info-request">Section 5 - Image Information Request for more information</a>.
+            </p>
+					</section>
+
+          <!-- Section 3: Identifier -->
+          <section>
+            <h2><a id="identifier" name="identifier">3. Identifier</a><a href="#toc" class="link-toc"><img src="img/icon-toc.png"></a></h2>
+            <p>
+              The API places no restrictions on the form of the identifiers that a server may use or support, although the identifier MUST be expressed as a string. All special characters (e.g. ? or #) MUST be URI encoded to avoid unpredictable client behaviors. The URL syntax relies upon slash (/) separators so any slashes in the identifier MUST be URI encoded (aka. percent-encoded, replace / with %2F ). See discussion in <a href="#url-encoding-and-decoding">Section 9 - URL Encoding and Decoding</a>.
+            </p>
+          </section>
+
+          <!-- Section 4: Image Request Parameters -->
+          <section>
+            <h2><a id="parameters" name="parameters">4. Image Request Parameters</a><a href="#toc" class="link-toc"><img src="img/icon-toc.png"></a></h2>
+            <p>
+              All parameters described below are required for compliant construction of a IIIF image API URL. The sequence of parameters in the URL MUST be in the order described below. The order of the parameters is also intended as the order of the operations by which the service should manipulate the image content. Thus, the image content is first extracted as a region of the source image, then scaled to the requested size, rotated and transformed into the color depth and format. This resulting image content is returned as the representation for the URL. All transformations are performed within the bounds of integer arithmatic.  The rounding method is not specified.  Floating point numbers should be have at most 10 decimal digits and consist only of decimal digits and “.” with a leading zero if less than 1.
+            </p>
+
+            <!-- Section 4.1: Region -->
+            <h3><a id="parameters-region" name="parameters-region">4.1 Region</a><a href="#toc" class="link-toc"><img src="img/icon-toc.png"></a></h3>
+            <p>
+              The region parameter defines the rectangular portion of the source image to be returned. Region can be specified by pixel coordinates, percentage or by the value “full”, which specifies that the entire region of the source image should be returned.
+            </p>
+            <table>
+              <tr>
+                <th>Form of Region</th>
+                <th>Parameter Description</th>
+              </tr>
+              <tr>
+                <td>full</td>
+                <td>The complete image is returned, without any cropping.</td>
+              </tr>
+              <tr>
+                <td>x,y,w,h</td>
+                <td>The region of the source image to be returned is defined in terms of absolute pixel values. The value of x represents the number of pixels from the 0 position on the horizontal axis. The value of y represents the number of pixels from the 0 position on the vertical axis. Thus the x,y position 0,0 is the upper left-most pixel of the image. w represents the width of the region and h represents the height of the region in pixels.</td>
+              </tr>
+              <tr>
+                <td>pct:x,y,w,h</td>
+                <td>The region to be returned is specified as a sequence of percentages of the source image’s dimensions. Thus, x represents the number of pixels from the 0 position on the horizontal axis, calculated as a percentage of the source image’s width. w represents the width of the region calculated as a percentage of the source image’s width. The same applies to y and h respectively. These may be floating point numbers (see <a href="#image-info-request">Section 5 - Image Information Request</a>).</td>
+              </tr>
+            </table>
+            <p>
+              If the request specifies a region which extends beyond the dimensions of the source image, then the service should return an image cropped at the boundary of the source image.
+            </p>
+            <p>
+              If the requested region's height or width is zero, or if the region is entirely outside the bounds of the source image, then the server MUST return a 400 (bad request) status code.
+            </p>
+            <p>
+              Examples:
+              <pre class="no-indent">
+                <span class="numbered-box">1</span> http://www.example.org/image-service/abcd1234/<span class="hilite">full</span>/full/0/native.jpg <br/>
+                <span class="numbered-box">2</span> http://www.example.org/image-service/abcd1234/<span class="hilite">80,15,60,75</span>/full/0/native.jpg <br/>
+                <span class="numbered-box">3</span> http://www.example.org/image-service/abcd1234/<span class="hilite">80,15,125,200</span>/full/0/native.jpg <br/>
+                <span class="numbered-box">4</span> http://www.example.org/image-service/abcd1234/<span class="hilite">pct:10,10,80,70</span>/full/0/native.jpg <br/>
+                <span class="numbered-box">5</span> http://www.example.org/image-service/abcd1234/<span class="hilite">pct:20,20,100,100</span>/full/0/native.jpg <br/>
+              </pre>
+            </p>
+            <br/>
+            <div class="img-request-region"></div>
+
+            <!-- Section 4.2: Size -->
+            <h3><a id="parameters-size" name="parameters-size">4.2 Size</a><a href="#toc" class="link-toc"><img src="img/icon-toc.png"></a></h3>
+            <p>
+              The size parameter determines the dimensions to which the extracted region is to be scaled.
+            </p>
+            <table>
+              <tr>
+                <th>Form of Size Parameter</th>
+                <th>Parameter Description</th>
+              </tr>
+              <tr>
+                <td>full</td>
+                <td>The extracted region is not scaled, and is returned at its full size.</td>
+              </tr>
+              <tr>
+                <td>w,</td>
+                <td>The extracted region should be scaled so that its width is exactly equal to w, and the height will be a calculated value that maintains the aspect ratio of the requested region.</td>
+              </tr>
+              <tr>
+                <td>,h</td>
+                <td>The extracted region should be scaled so that its height is exactly equal to h, and the width will be a calculated value that maintains the aspect ratio of the requested region.</td>
+              </tr>
+              <tr>
+                <td>pct:n</td>
+                <td>The width and height of the returned image is scaled to n% of the width and height of the extracted region. The aspect ratio of the returned image is the same as that of the extracted region.</td>
+              </tr>
+              <tr>
+                <td>w,h</td>
+                <td>The width and height of the returned image are exactly w and h. The aspect ratio of the returned image MAY be different than the extracted region, resulting in a distorted image.</td>
+              </tr>
+              <tr>
+                <td>!w,h</td>
+                <td>The image content is scaled for the best fit such that the resulting width and height are less than or equal to the requested width and height. The exact scaling MAY be determined by the service provider, based on characteristics including image quality and system performance. The dimensions of the returned image content are calculated to maintain the aspect ratio of the extracted region.</td>
+              </tr>
+            </table>
+            <p>
+              If the resulting height or width is zero, then the server MUST return a 400 (bad request) status code.
+            </p>
+            <p>
+              The image server MAY support scaling beyond the full size of the extracted region.
+            </p>
+            <p>
+              Examples:
+              <pre class="no-indent">
+                <span class="numbered-box">1</span> http://www.example.org/image-service/abcd1234/full/<span class="hilite">full</span>/0/native.jpg <br/>
+                <span class="numbered-box">2</span> http://www.example.org/image-service/abcd1234/full/<span class="hilite">100,</span>/0/native.jpg <br/>
+                <span class="numbered-box">3</span> http://www.example.org/image-service/abcd1234/full/<span class="hilite">,100</span>/0/native.jpg <br/>
+                <span class="numbered-box">4</span> http://www.example.org/image-service/abcd1234/full/<span class="hilite">pct:50</span>/0/native.jpg <br/>
+                <span class="numbered-box">5</span> http://www.example.org/image-service/abcd1234/full/<span class="hilite">150,75</span>/0/native.jpg <br/>
+                <span class="numbered-box">6</span> http://www.example.org/image-service/abcd1234/full/<span class="hilite">!150,75</span>/0/native.jpg <br/>
+              </pre>
+            </p>
+            <br/>
+            <div class="img-request-size"></div>
+
+            <!-- Section 4.3: Rotation -->
+            <h3><a id="parameters-rotation" name="parameters-rotation">4.3 Rotation</a><a href="#toc" class="link-toc"><img src="img/icon-toc.png"></a></h3>
+            <p>
+              The rotation value represents the number of degrees of clockwise rotation from the original, and may be any floating point number from 0 to 360. Initially most services will only support 0, 90, 180 or 270 as valid values.
+            </p>
+            <p>
+              Examples:
+              <pre class="no-indent">
+                <span class="numbered-box">1</span> http://www.example.org/image-service/abcd1234/full/full/<span class="hilite">0</span>/native.jpg <br/>
+                <span class="numbered-box">2</span> http://www.example.org/image-service/abcd1234/full/full/<span class="hilite">90</span>/native.jpg <br/>
+                <span class="numbered-box">3</span> http://www.example.org/image-service/abcd1234/full/full/<span class="hilite">180</span>/native.jpg <br/>
+                <span class="numbered-box">4</span> http://www.example.org/image-service/abcd1234/full/full/<span class="hilite">270</span>/native.jpg <br/>
+                <span class="numbered-box">5</span> http://www.example.org/image-service/abcd1234/full/full/<span class="hilite">22.5</span>/native.jpg <br/>
+              </pre>
+            </p>
+            </br/>
+            <div class="img-request-rotation"></div>
+
+            <p>
+              In most cases a rotation will change the width and height dimensions of the returned image file.  The service SHOULD return an image file that contains all of the image contents requested in the region and size parameters, even if the dimensions of the returned image file are different than specified in the size parameter.  The image contents SHOULD NOT be scaled  as a result of the rotation, and there SHOULD be no additional space between the corners of the rotated image contents and the bounding box of the returned image file.
+            </p>
+            <p>
+              For non-90-degree rotations the API does not specify the background color.
+            </p>
+
+            <!-- Section 4.4: Quality -->
+            <h3><a id="parameters-quality" name="parameters-quality">4.4 Quality</a><a href="#toc" class="link-toc"><img src="img/icon-toc.png"></a></h3>
+            <p>
+              The quality parameter determines the bit-depth of the delivered image. The quality value of native requests an image of the same bit-depth as the source image. Values other than native are requested transformations of the bit-depth of the source image.
+            </p>
+            <table>
+              <tr>
+                <th>Quality Parameter Returned</th>
+                <th>Returned</th>
+              </tr>
+              <tr>
+                <td>native</td>
+                <td>The image is returned at an unspecified bit-depth.</td>
+              </tr>
+              <tr>
+                <td>color</td>
+                <td>The image is returned in 24-bit color.</td>
+              </tr>
+              <tr>
+                <td>grey</td>
+                <td>The image is returned in 8-bit greyscale</td>
+              </tr>
+              <tr>
+                <td>bitonal</td>
+                <td>The image is returned in 1-bit bitonal</td>
+              </tr>
+            </table>
+            <p>
+              Examples:
+              <pre class="no-indent">
+                <span class="numbered-box">1</span> http://www.example.org/image-service/abcd1234/full/600,/0/<span class="hilite">native</span>.jpg <br/>
+                <span class="numbered-box">2</span> http://www.example.org/image-service/abcd1234/full/600,/0/<span class="hilite">color</span>.jpg <br/>
+                <span class="numbered-box">3</span> http://www.example.org/image-service/abcd1234/full/600,/0/<span class="hilite">grey</span>.jpg <br/>
+                <span class="numbered-box">4</span> http://www.example.org/image-service/abcd1234/full/600,/0/<span class="hilite">bitonal</span>.jpg <br/>
+              </pre>
+            </p>
+            </br/>
+            <div class="img-request-quality"></div>
+
+            <!-- Section 4.5: Format -->
+            <h3><a id="parameters-format" name="parameters-format">4.5 Format</a><a href="#toc" class="link-toc"><img src="img/icon-toc.png"></a></h3>
+            <p>
+              The format of the returned image is optionally expressed as an extension at the end of the URL.
+            </p>
+            <table>
+              <tr>
+                <th>Extension</th>
+                <th>Mimetype</th>
+              </tr>
+              <tr>
+                <td>jpg</td>
+                <td>image/jpeg</td>
+              </tr>
+              <tr>
+                <td>tif</td>
+                <td>image/tiff</td>
+              </tr>
+              <tr>
+                <td>png</td>
+                <td>image/png</td>
+              </tr>
+              <tr>
+                <td>gif</td>
+                <td>image/gif</td>
+              </tr>
+              <tr>
+                <td>jp2</td>
+                <td>image/jp2</td>
+              </tr>
+              <tr>
+                <td>pdf</td>
+                <td>application/pdf</td>
+              </tr>
+            </table>
+            <p>
+              Examples:
+              <pre class="no-indent">
+                http://www.example.org/image-service/abcd1234/full/600,/0/native<span class="hilite">.jpg</span> <br/>
+                http://www.example.org/image-service/abcd1234/full/600,/0/native<span class="hilite">.png</span> <br/>
+                http://www.example.org/image-service/abcd1234/full/600,/0/native<span class="hilite">.tif</span> <br/>
+              </pre>
+            </p>
+            <p>
+              If the format is not specified in the URI, then the server SHOULD use the HTTP Accept header to determine the client’s preferences for the format. The server may either do 200 (return the representation in the response) or 30x (redirect to the correct URI with a format extension) style content negotiation. If neither are given, then the server should use a default format of its own choosing.
+            </p>
+
+            <!-- Section 4.6: Order of Implementation -->
+            <h3><a id="parameters-order" name="parameters-order">4.6 Order of Implementation</a></h3>
+            <p>
+              The sequence of parameters in the URL is intended to express the order in which image manipulations are made against the original. This is important to consider when implementing the service because applying the same parameters in a different sequence will often result in a different image being delivered. The order is critical so that the application calling the service reliably receives the output it expects.
+            </p>
+            <p>
+              The parameters should be interpreted as if the the sequence of image manipulations were:
+            </p>
+            <pre class="indent">
+              Region THEN Size THEN Rotation THEN Quality THEN Format
+            </pre>
+
+            <div class="img-request-order"></div>
+          </section>
+
+          <!-- Section 5: Image Information Request -->
+          <section>
+            <h2><a id="image-info-request" name="image-info-request">5. Image Information Request</a><a href="#toc" class="link-toc"><img src="img/icon-toc.png"></a></h2>
+            <p>
+              The service MUST return technical information about the requested image in JSON and XML formats.  The request  for technical information MUST conform to the format:
+            </p>
+            <pre class="indent">http[s]://server/[prefix/]identifier/info.xml</pre>
+            <pre class="indent">or</pre>
+            <pre class="indent">http[s]://server/[prefix/]identifier/info.json</pre>
+            </pre>
+            <p>
+              All IIIF compliant services must support both the XML and JSON response.
+            </p>
+            <p>
+              The response will return the following information
+            </p>
+            <table>
+              <tr>
+                <th>Element</th>
+                <th>Required? </th>
+                <th>Description</th>
+              </tr>
+              <tr>
+                <td>identifier</td>
+                <td>Required  </td>
+                <td>The unique identifier of the source image, expressed as a string. The identifier MUST be supplied without URI encoding.</td>
+              </tr>
+              <tr>
+                <td>width</td>
+                <td>Required</td>
+                <td>The width of the source image.</td>
+              </tr>
+              <tr>
+                <td>height  </td>
+                <td>Required</td>
+                <td>The height of the source image.</td>
+              </tr>
+              <tr>
+              </tr>
+                <td>scale_factors</td>
+                <td>Optional</td>
+                <td>Some image servers support the creation of multiple resolution levels for a single image in order to optimize the efficiency in delivering images of different sizes. The scale_factors element expresses a list of resolution scaling factors.</td>
+              <tr>
+              </tr>
+                <td>tile_width</td>
+                <td>Optional</td>
+                <td>Some image servers support the use of predefined tiles to efficiently deliver assembled images.  The tile_width element expresses the width of the predefined tiles.</td>
+              <tr>
+                <td>tile_height</td>
+                <td>Optional</td>
+                <td>The tile_height element expresses the height of the predefined tiles.</td>
+              </tr>
+              <tr>
+                <td>formats</td>
+                <td>Optional</td>
+                <td>The list of image format parameter values available for the image.</td>
+              </tr>
+              <tr>
+                <td>qualities</td>
+                <td>Optional</td>
+                <td>The list of image quality parameter values available for the image.</td>
+              </tr>
+              <tr>
+                <td>profile</td>
+                <td>Optional</td>
+                <td>URI indicating the compliance level supported. Values as described in <a href="#compliance-levels">Section 8. Compliance Levels</a></td>
+              </tr>
+            </table>
+            <p>
+              The XML response should conform to the format shown in the following example. <a href="image-api.xsd">W3C XML</a> and <a href="image-api.rng">Relax-NG</a> schemas are available for validation.
+            </p>
+            <pre>
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;info xmlns="http://library.stanford.edu/iiif/image-api/ns/"&gt;
+  &lt;identifier&gt;1E34750D-38DB-4825-A38A-B60A345E591C&lt;/identifier&gt;
+  &lt;width&gt;6000&lt;/width&gt;
+  &lt;height&gt;4000&lt;/height&gt;
+  &lt;scale_factors&gt;
+    &lt;scale_factor&gt;1&lt;/scale_factor&gt;
+    &lt;scale_factor&gt;2&lt;/scale_factor&gt;
+    &lt;scale_factor&gt;4&lt;/scale_factor&gt;
+  &lt;/scale_factors&gt;
+  &lt;tile_width&gt;1024&lt;/tile_width&gt;
+  &lt;tile_height&gt;1024&lt;/tile_height&gt;
+  &lt;formats&gt;
+    &lt;format&gt;jpg&lt;/format&gt;
+    &lt;format&gt;png&lt;/format&gt;
+  &lt;/formats&gt;
+  &lt;qualities&gt;
+    &lt;quality&gt;native&lt;/quality&gt;
+    &lt;quality&gt;grey&lt;/quality&gt;
+  &lt;/qualities&gt;
+  &lt;profile&gt;http://library.stanford.edu/iiif/image-api/compliance.html#level1&lt;/profile&gt;
+&lt;/info&gt;
+            </pre>
+            <p>
+              The JSON response should conform to the format shown in the following example:
+            </p>
+            <pre>
+{
+  "identifier" : "1E34750D-38DB-4825-A38A-B60A345E591C",
+  "width" : 6000,
+  "height" : 4000,
+  "scale_factors" : [ 1, 2, 4 ],
+  "tile_width" : 1024,
+  "tile_height" : 1024,
+  "formats" : [ "jpg", "png" ],
+  "qualities" : [ "native", "grey" ]
+  "profile" : "http://library.stanford.edu/iiif/image-api/compliance.html#level0"
+}
+            </pre>
+          </section>
+
+          <!-- Section 6: Server Responses -->
+          <section>
+            <h2><a id="server-responses" name="server-responses">6. Server Responses</a></h2>
+
+            <!-- Section 6.1: Successful Responses -->
+            <h3><a id="server-responses-successful" name="server-responses-successful">6.1 Successful Responses</a><a href="#toc" class="link-toc"><img src="img/icon-toc.png"></a></h3>
+            <p>
+              Servers may transmit HTTP responses with status codes 200, 302 and 304 when the request has been successfully processed.  If the status code is 200, then the entity-body MUST be the requested image or information response.  If the status code is 302 or 304, then the entity-body is unrestricted, but it is RECOMMENDED to be empty.  If the status code is 302, then the Location HTTP Header MUST be set containing the URL of the image that fulfills the request.  This enables servers to have a single canonical URL to promote caching of responses.  Status code 304 is handled exactly as per the HTTP specification. Clients should therefore expect to encounter all of these situations and not assume that the entity-body of the initial response necessarily contains the image data.
+            </p>
+
+            <!-- Section 6.2: Error Conditions -->
+            <h3><a id="server-responses-error" name="server-responses-error">6.2 Error Conditions</a><a href="#toc" class="link-toc"><img src="img/icon-toc.png"></a></h3>
+            <p>
+              The order in which servers parse requests and detect errors is not specified. A request will fail on the first error encountered and return an appropriate code with more detail in the response document. Errors are reported at the parameter level only with an option for more detailed text.
+            </p>
+            <p>
+              Errors should be reported in a standard HTTP response code in the HTTP header as follows:
+            </p>
+            <table>
+              <tr>
+                <th>Error Code</th>
+                <th>Description</th>
+              </tr>
+              <tr>
+                <td>400 Bad Request</td>
+                <td>This response is used when it is impossible for the server to fulfil the request, for example if the combination of parameters would result in a zero-sized image. In the case of a malformed URL it may not be possible to identify a failed parameter.</td>
+              </tr>
+              <tr>
+                <td>401 Unauthorized</td>
+                <td>Authentication is required and not provided. See Section 7 below for details.</td>
+              </tr>
+              <tr>
+                <td>403 Forbidden</td>
+                <td>The user, authenticated or not, is not permitted to perform the requested operation.</td>
+              </tr>
+              <tr>
+                <td>404 Not Found</td>
+                <td>The image resource specified by [identifier] does not exist</td>
+              </tr>
+              <tr>
+                <td>414 URI Too Long</td>
+                <td>As the specification does not support query parameters there should not be a post-amble beyond the image format specifier. However, there may be an embedded escaped URL identifier. Limit requests to 1024 characters.</td>
+              </tr>
+              <tr>
+                <td>415 Invalid Media</td>
+                <td>Format not available (implies failure of the format specifier)</td>
+              </tr>
+              <tr>
+                <td>500 Internal Server Error</td>
+                <td>The server encountered an unexpected error that prevented it from fulfilling the request.</td>
+              </tr>
+              <tr>
+                <td>501 Not Implemented</td>
+                <td>A valid IIIF request that is not implemented by this server. If the requested format is not implemented then a 415 error should be used.</td>
+              </tr>
+              <tr>
+                <td>503 Service unavailable</td>
+                <td>Used when the server is busy/temporarily unavailable due to load/maintenance issues. An alternative to connection refusal with the option to specify a back-off period.</td>
+              </tr>
+            </table>
+            <p>
+              The body of the response for all error conditions should contain an XML fragment with the parameter and optional human readable text as follows. The Content-Type must be “text/xml”.
+            </p>
+            <pre>
+&lt;?xml version="1.0" encoding="UTF-8" ?&gt;
+&lt;error xmlns="http://library.stanford.edu/iiif/image-api/ns/"&gt;
+  &lt;parameter&gt;size&lt;/parameter&gt;
+  &lt;text&gt;Invalid size specified&lt;/text&gt;
+&lt;/error&gt;
+            </pre>
+            <p>
+              The text element is optional and can explain the failure on more detail - for example to distinguish not implemented vs out-of-bounds in the case of a 403.
+            </p>
+          </section>
+
+          <!-- Section 7: Authenitcation -->
+          <section>
+            <h2><a id="authentication" name="authentication">7. Authentication</a><a href="#toc" class="link-toc"><img src="img/icon-toc.png"></a></h2>
+            <p>
+              This API does not specify whether the image server will support authentication or what mechanism it might use. In the case of  "401 Unauthorized" HTTP error response, the content of the WWW-Authenticate header will depend on the authentication mechanism supported by the server. If the server supports HTTP Basic or Digest authentication then the header should follow <a href="http://www.ietf.org/rfc/rfc2617" class="ext-link">RFC2617</a>, for example:
+            <p>
+            <pre class="no-indent">
+              WWW-Authenticate: Basic realm="Images"
+            </pre>
+            <p>
+              If the server supports cookie-based authentication then the response should include the location of the page that will allow the user to login:
+            </p>
+            <pre class="no-indent">
+              WWW-Authenticate: Cookie location="https://example.com/login&amp;redirect={URI}"
+            </pre>
+            <p>
+              Where {URI} is a template parameter that SHOULD be used if the login server supports redirection after login. A client MUST substitute the current page URI in place of {URI} before presenting a login link to the user. Note that while there is widespread agreement that the limitation of WWW-Authenticate to Basic and Digest authentication in the current HTTP specification, there is no standard way to indicate appropriate redirection to a login screen, or convey a URI template to insert a return URI.
+            </p>
+          </section>
+
+          <!-- Section 8: Compliance Levels -->
+          <section>
+            <h2><a id="compliance-levels" name="compliance-levels">8. Compliance Levels</a><a href="#toc" class="link-toc"><img src="img/icon-toc.png"></a></h2>
+            <p>
+              A service SHOULD specify on all responses the extent to which the API is supported. This is done by including an HTTP Link header (<a href="http://tools.ietf.org/html/rfc5988" class="ext-link">RFC5988</a>) entry pointing to the description of the highest level of conformance of which ALL of the requirements are met. The “rel” type to be used is “profile”, and thus a complete header might look like:
+            </p>
+            <p>
+              Link:
+            </p>
+            <pre class="no-indent">&lt;http://library.stanford.edu/iiif/image-api/compliance.html#level0&gt;;rel="profile"</pre>
+            <p>
+              An image server MAY declare different compliance levels for different images. If the compliance level is not indicated, then a client should assume level 0 compliance only. For detailed compliance definitions see <a href="http://library.stanford.edu/iiif/image-api/compliance.html">http://library.stanford.edu/iiif/image-api/compliance.html</a>.
+            </p>
+            <p>
+              The compliance profile URI given in the Link header (between &lt; and &gt;) may also be returned in the profile element of responses to Image Information Requests.
+            </p>
+          </section>
+
+          <!-- Section 9: URL Encoding and Decoding -->
+          <section>
+            <h2><a id="url-encoding-and-decoding" name="url-encoding-and-decoding">9. URL Encoding and Decoding</a><a href="#toc" class="link-toc"><img src="img/icon-toc.png"></a></h2>
+            <p>
+              The URL syntax of this API relies upon slash (/) separators which MUST NOT be encoded. Clients MUST percent-encode special characters (the to-encode set below: percent and gen-delims of <a href="http://www.ietf.org/rfc/rfc3986" class="ext-link">RFC3986</a> except the colon) within the components of requests. For example, any slashes within the identifier part of the URL MUST be percent-encoded. Encoding is necessary only for the identifier because other components will not include special characters.
+            </p>
+            <pre class="no-indent">to-encode = "/" / "?" / "#" / "[" / "]" / "@" / "%"</pre>
+            <p>
+              Upon receiving an API request, a server MUST first split the URL path on slashes and then decode any percent-encoded characters in each component.
+            </p>
+            <p>
+              Additionally, if identifiers include any characters outside the US-ASCII set then the encoding to octets must be defined consistently on client and server, and the octets MUST be percent-encoded. Percent-encoding other characters introduces no ambiguity but is unnecessary.
+            <p>
+            <table>
+              <tr>
+                <th>Parameters</th>
+                <th>URL path (without leading http:server/[prefix/])</th>
+              </tr>
+              <tr>
+                <td>identifier=id1 region=full size=full rotation=0 quality=native</td>
+                <td>id1/full/full/0/native</td>
+              </tr>
+              <tr>
+                <td>identifier=id1 region=0,10,100,200 size=pct:50 rotation=90 quality=native format=png</td>
+                <td>id1/0,10,100,200/pct:50/90/native.png</td>
+              </tr>
+              <tr>
+                <td>identifier=id1 region=pct:10,10,80,80 size=50, rotation=22.5 quality=color format=jpg</td>
+                <td>id1/pct:10,10,80,80/50,/22.5/color.jpg</td>
+              </tr>
+              <tr>
+                <td>identifier=bb157hs6068 region=full size=full rotation=270 quality=grey format=jpg</td>
+                <td>bb157hs6068/full/full/270/grey.jpg</td>
+              </tr>
+              <tr>
+                <td>identifier=ark:/12025/654xz321 region=full size=full rotation=0 quality=native</td>
+                <td>ark:%2F12025%2F654xz321/full/full/0/native</td>
+              </tr>
+              <tr>
+                <td>identifier=urn:foo:a123,456 region=full size=full rotation=0 quality=native</td>
+                <td>urn:foo:a123,456/full/full/0/native</td>
+              </tr>
+              <tr>
+                <td>identifier=urn:sici:1046-8188(199501)13:1%3C69:FTTHBI%3E2.0.TX;2-4 region=full size=full rotation=0 quality=native</td>
+                <td>urn:sici:1046-8188(199501)13:1%253C69:FTTHBI%253E2.0.TX;2-4/full/full/0/native</td>
+              </tr>
+              <tr>
+                <td>identifier=http://example.com/?54#a region=full size=full rotation=0 quality=native</td>
+                <td>http:%2F%2Fexample.com%2F%3F54%23a/full/full/0/native</td>
+              </tr>
+              <tr>
+                <td>identifier=id1 image information request, format=json</td>
+                <td>id1/info.json</td>
+              </tr>
+              <tr>
+                <td>identifier=id1 image information request, format=xml</td>
+                <td>id1/info.xml</td>
+              </tr>
+            </table>
+            <p>
+              Servers which are incapable of processing arbitrarily encoded identifiers SHOULD make their best efforts to expose only image identifiers for which typical clients will not encode any of the characters, and thus it is RECOMMENDED to limit characters in identifiers to letters, numbers and the underscore character.
+            </p>
+          </section>
+
+          <!-- Section 10: Security Considerations -->
+          <section>
+            <h2><a id="security-considerations" name="security-considerations">10. Security Considerations</a><a href="#toc" class="link-toc"><img src="img/icon-toc.png"></a></h2>
+            <p>
+              This API defines a URI syntax and the semantics associated with its components. The composition of URIs has few security considerations except possible exposure of sensitive information in URIs or revealing of browse/view behavior of users.
+            </p>
+            <p>
+              Server applications implementing this API must consider possible denial-of-service attacks, and authentication vulnerabilities based on DNS spoofing. Applications must be careful to parse incoming requests (URIs) in ways that avoid overflow or injection attacks.
+            </p>
+            <p>
+              Early sanity checking of URI’s (lengths, trailing GET, invalid characters, out-of-range parameters) and rejection with appropriate response codes is recommended.
+            </p>
+          </section>
+
+          <!-- Section A: Implementation Notes -->
+          <section>
+            <h2><a id="implementation-notes" name="implementation-notes">A. Implementation Notes</a><a href="#toc" class="link-toc"><img src="img/icon-toc.png"></a></h2>
+            <ul>
+              <li>For use cases that enable the saving of the image, it is RECOMMENDED to use the HTTP Content-Disposition header (<a href="http://tools.ietf.org/html/rfc6266" class="ext-link">RFC6266</a>) to provide a convenient filename that distinguishes the image, based on the identifier and parameters provided.</li>
+              <li>This specification makes no assertion about the rights status of requested images or metadata, whether or not authentication has been accomplished.  Please see the IIIF Metadata API for rights information.</li>
+              <li>This API does not specify how image servers fulfill requests, what quality the returned images will have for different parameters, or how parameters may affect performance. See the compliance document for more discussion.</li>
+              <li>Image identifiers that include the slash (/ %2F) or backslash (\ %5C) characters may cause problems with some HTTP servers. Apache servers from version 2.2.18 support the "AllowEncodedSlashes NoDecode" (link to <a href="http://httpd.apache.org/docs/2.2/en/mod/core.html#allowencodedslashes" class="ext-link">http://httpd.apache.org/docs/2.2/en/mod/core.html#allowencodedslashes</a>) configuration directive which will correctly pass these characters to client applications without rejecting or decoding them. Servers using older versions of Apache and local identifiers which include these characters will need to use a workaround such as internally translating or escaping slash and backslash to safe value (perhaps by double URL-encoding them).</li>
+             <li> As described in <a href="#parameters-rotation">Section 4.2 (Rotation)</a>, in order to retain the size of the requested image contents, rotation will change the width and height dimensions of the returned image file. A formula for calculating the dimensions of the returned image file for a given rotation can be found <a href="http://www-sul.stanford.edu/iiif/image-api/rotation_calc.html">here</a>.</li>
+            </ul>
+          </section>
+
+          <!-- Section B: Acknowledgements -->
+          <section>
+            <h2><a id="acknowledgements" name="acknowledgements">B. Acknowledgments</a><a href="#toc" class="link-toc"><img src="img/icon-toc.png"></a></h2>
+            <p>
+              The production of this document was generously supported by a grant from the <a href="http://www.mellon.org/" class="ext-link">Andrew W. Mellon Foundation</a>.
+            </p>
+            <p>
+              The full IIIF Working Group deserves thanks and recognition for their continuous engagement, innovative ideas and feedback. Members of the group not listed as authors or editors above include Aquiles Alencar Brayner, Richard Boulderstone, Svein Arne Brygfjeld, Tom Cramer, Markus Enders, Renhart Gittens, David Golding, Tim Gollins, Peter James, Dean Krafft, Matt McGrattan, Stephane Pillorget, Johan van der Knijff, Romain Vassilieff, and William Ying.
+            </p>
+            <p>
+              The inspiration, use cases and initial outline for this API originated from the work of the Digital Medieval Manuscript Interoperabiltiy Technical Council.
+            </p>
+            <p>
+              Attendees of the third annual LibDevConX workshop gave an early draft of this API a thoughtful hearing and provided essential feedback to ensure that the API fit with diverse use cases and technical environments.
+            </p>
+            <p>
+              Many thanks to Matthieu Bonicel, Kevin Clarke, Mark Patton, Lynn McRae, Willy Mene, Brian Tingle, Ian Davis and Scotty Logan for your thoughtful contributions to the effort and written feedback.
+            </p>
+          </section>
+
+          <!-- Section C: Change Log -->
+          <section>
+            <h2><a id="change-log" name="change-log">C. Change Log</a><a href="#toc" class="link-toc"><img src="img/icon-toc.png"></a></h2>
+            <table>
+              <tr>
+                <th>Date</th>
+                <th>Editor</th>
+                <th>Description</th>
+              </tr>
+              <tr>
+                <td>2012-08-10</td>
+                <td>ssnydman</td>
+                <td>Release 1.0</td>
+              </tr>
+              <tr>
+                <td>2012-07-13</td>
+                <td>rsanderson</td>
+                <td>Incorporates responses to RFC feedback</td>
+              </tr>
+              <tr>
+                <td>2012-03-09</td>
+                <td>ssnydman</td>
+                <td>Initial release</td>
+              </tr>
+              <tr>
+                <td>2012-04-13</td>
+                <td>ssnydman</td>
+                <td>0.2 after internal review and IIIF April Meeting</td>
+              </tr>
+              <tr>
+                <td>2012-05-02</td>
+                <td>ssnydman</td>
+                <td>RFC version</td>
+              </tr>
+            </table>
+					<footer>
+            <hr style="height: 1px;">
+						<p>Please send feedback to <a href="iiif-discuss@googlegroups.com">iiif-discuss@googlegroups.com</a>.</p>
+ 					</footer>
+
+				</article>
+
+			</div> <!-- #main -->
+      <div class="color-bar"></div>
+		</div> <!-- #main-container -->
+
+		<div class="footer-container">
+			<footer class="wrapper">
+			</footer>
+		</div>
+
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+		<script>window.jQuery || document.write('<script src="js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+
+		<script src="js/main.js"></script>
+	</body>
+</html>
