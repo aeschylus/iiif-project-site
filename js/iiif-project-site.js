@@ -23,7 +23,6 @@ var App = (function() {
     function init() {
         bindEvents();
         render();
-        $('body').annotator();
     } 
 
     return {

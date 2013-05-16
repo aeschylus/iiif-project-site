@@ -12,7 +12,8 @@ body {
     top:0;
     width:100%;
     height:100%;
-box-shadow: inset 0px 0px 50px black;
+    .box-shadow(inset 0px 0px 50px black);
+    padding-top:@baseLineHeight*4;
 }
 section {
     .clearfix();
@@ -42,20 +43,19 @@ a:-webkit-any-link {
     .clearfix;
     width:100%;
     padding:@baseLineHeight/2 @baseLineHeight;
-    border-bottom:3px solid skyblue;
     position:fixed;
     left:0;
     right:0;
     top:0;
     background:white;
-    height:@baseLineHeight*3;
+    height:@baseLineHeight*2;
     .menu-btn {
         float:right;
         display:none;
     }
 }
 #logo img {
-    width:50px;
+    width:30px;
 }
 
 #mainMenu {
@@ -64,15 +64,30 @@ a:-webkit-any-link {
     right:@baseLineHeight;
     li {
         float:left;
-        font-size:@baseFontSize*1.5;
-        line-height:@baseLineHeight*2;
         padding:@baseLineHeight/2;
         a:link {
             display:block;
-width:100%;
-height:100%;
+            width:100%;
+            height:100%;
         }
     }
+}
+#apiMenu {
+    position:fixed;
+    top:0;
+    left:@baseLineHeight*3;
+    li {
+        float:left;
+        padding:@baseLineHeight/2;
+    }
+}
+.color-bar {
+  background: transparent url('../imgs/bg-spectrum.png') center top repeat-x;
+  height: 21px;
+  left: 0;
+  position: fixed;
+  top: @baseLineHeight*2;
+  width: 100%;
 }
 hr {
     width:100%;
@@ -81,9 +96,22 @@ hr {
     margin:0;
     border-bottom:1px solid white;
 }
+#apiDemo {
+font-family: monospace;
+font-weight:bold;
+font-size:@baseFontSize*1.5;
+color: black;
+}
+#apiDemoArea {
+    .clearfix();
+background: rgba(0,0,0,0.5);
+.box-shadow(0px 0px 10px black);
+}
 
-.container.top {
-    margin-top:@baseLineHeight*5;
+img.apiDemo {
+    height:80%;
+    padding:@baseLineHeight*2;
+    float:right;
 }
 
 footer {

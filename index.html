@@ -1,13 +1,14 @@
 <!DOCTYPE HTML>
 <html lang="en">
     <head>
+        <title>IIIF - International Image Interoperability Framework</title>
+        <script type="text/javascript" src="//use.typekit.net/dpv1gvc.js"></script>
+        <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
         <meta charset="UTF-8">
         <meta name="description" content="">
         <meta name="keywords" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>IIIF - International Image Interoperability Framework</title>
-        <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
         <link rel="stylesheet/less" type="text/css" href="less/index.less"/>
+        <link rel="shortcut icon" href="favicon.ico">
         <!-- <link rel="stylesheet" type="text/css" href="css"/> -->
         <link rel="stylesheet" type="text/css" href="font-awesome/css/font-awesome.min.css"/>
         <script type="text/javascript" src="lib/jquery.min.js"></script>
@@ -15,20 +16,20 @@
         <script type="text/javascript" src="lib/jquery-scrollTo.min.js"></script>
         <script type="text/javascript" src="lib/jquery-waypoints.min.js"></script>
     </head>
-    <body>	
-
         <div id="header">
             <a id="logo" href="#"><img src="imgs/logo_med.png" alt="IIIF Project Homepage" /></a>
-            <a href="#mainMenu" class="menu-btn icon-3x icon-reorder"></a>
+            <a href="#mainMenu" class="menu-btn icon-2x icon-reorder"></a>
         </div>
-        <div id="masthead" class="container top">
+    <body>	
+
+        <div id="masthead" class="container">
             <img src="imgs/logo_large.png" alt="" />
             <h1>
                 International Image Interoperability Framework
             </h1>
         </div>
         <div class="container" >
-            <h3 >The IIIF Standard estbliashes a consistent API for delivering archival-quality images over the web.</h3>
+            <h3 >The IIIF Standard estbliashes a suite of consistent APIs for delivering archival-quality images over the web. <a href="#" style="color:orangered">Read More...</a></h3>
         </div>
         <section>
             <div class="container">
@@ -53,7 +54,6 @@
                         <h3>Control Surface for Scholarly Research</h3>
                         <p>Scholars and developers can access to the full depth of available information about digital objects and the manuscripts, maps, photographs and other physical media they can represent, through metadata, discovery, and fine-grained delivery of the objects themselves.</p>
                         </li>
-                        <li>
                     </ul>
                 </div>
             </div>
@@ -61,44 +61,65 @@
         <section id="demo">
             <div class="container">
                 <form action="">
-                    <input type="text" value="http://www.example.org/image-service/abcd1234/full/full/0/native.jpg" style="margin:0; margin-left:auto; margin-right:auto; height:50px; width:100%; opacity:0.8; border:2px solid skyblue"/>
+                    <select id="apiDemo" value="http://www.example.org/image-service/abcd1234/full/full/0/native.jpg" style="margin:0; margin-left:auto; margin-right:auto; height:50px; width:100%; opacity:0.8; border:2px solid skyblue"/>
+                        <option value="https://stacks.stanford.edu/image/iiif/bd183mz0176%2fW688_000001_300/full/pct:0.390625/0/native.jpg">{server}/{identifier}/full/pct:0.390625/0/native.jpg</option>
+                        <option value="https://stacks.stanford.edu/image/iiif/bd183mz0176%2fW688_000001_300/full/pct:0.390625/0/native.jpg">https://stacks.stanford.edu/image/iiif/bd183mz0176/W688_000001_300/full/pct:0.390625/0/native.jpg</option>
+                        <option value="https://stacks.stanford.edu/image/iiif/bd183mz0176%2fW688_000001_300/full/pct:0.390625/0/native.jpg">https://stacks.stanford.edu/image/iiif/bd183mz0176/W688_000001_300/full/pct:0.390625/0/native.jpg</option>
+                        <option value="https://stacks.stanford.edu/image/iiif/bd183mz0176%2fW688_000001_300/full/pct:0.390625/0/native.jpg">https://stacks.stanford.edu/image/iiif/bd183mz0176/W688_000001_300/full/pct:0.390625/0/native.jpg</option>
+                        <option value="https://stacks.stanford.edu/image/iiif/bd183mz0176%2fW688_000001_300/full/pct:0.390625/0/native.jpg">https://stacks.stanford.edu/image/iiif/bd183mz0176/W688_000001_300/full/pct:0.390625/0/native.jpg</option>
+                        </select>
                 </form>
+                <div id="apiDemoArea">
+                    <img class="apiDemo" src="https://stacks.stanford.edu/image/iiif/bd183mz0176%2fW688_000001_300/full/full/0/native.jpg" alt="basic retrieval" />
+                    <caption>This image has been retrieved with the following coordinates.</caption>
+                </div>
             </div>
         </section>
+        <section id="caseStudies">
+        <div class="container">
+            <h2>Case Studies</h2>
+            <h3>These are just a few implementations from institutions around the world.</h3>
+        </div>
+        </section>
         <section id="partners">
-            <ul id="partnersList">
-                <li>
-                Stanford University
-                </li>
-                <li>
-                The British Library
-                </li>
-                <li>
-                Bodleian Libraries, Oxford University
-                </li>
-                <li>
-                La Bibliothèque nationale de France
-                </li>
-                <li>
-                Nasjonalbiblioteket (National Library of Norway)
-                </li>
-                <li>
-                Los Alamos National Library
-                </li>
-                <li>
-                Cornell University
-                </li>
-            </ul>
+            <div class="container">
+                <h3>In Partnership With</h3>
+                <ul id="partnersList">
+                    <li>
+                    Stanford University
+                    </li>
+                    <li>
+                    The British Library
+                    </li>
+                    <li>
+                    Bodleian Libraries, Oxford University
+                    </li>
+                    <li>
+                    La Bibliothèque nationale de France
+                    </li>
+                    <li>
+                    Nasjonalbiblioteket (National Library of Norway)
+                    </li>
+                    <li>
+                    Los Alamos National Library
+                    </li>
+                    <li>
+                    Cornell University
+                    </li>
+                </ul>
+            </div>
         </section>
         <section id="register">
         </section>
         <section id="footer" style="height:500px; background-color:beige;">
         </section>
+        <div class="color-bar"></div>
         <ul id="mainMenu">
             <li><a href="#demo">Try It</a></li>
             <li><a href="#features">Features</a></li>
             <li><a href="#partners">Partners</a></li>
-            <li><a href="iiif-api/">APIs</a></li>
+            <li><a href="apis.html">APIs</a></li>
+            <li><a href="implementation.html">Implementation</a></li>
             <li><a href="community.html">Community</a></li>
         </ul>
 

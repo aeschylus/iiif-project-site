@@ -1,23 +1,24 @@
 #masthead {
-h1 {
-    .column(4);
-    .push(1);
-    font-size:@baseLineHeight*3;
-}
-img {
-    .column(4);
-}
+    margin-bottom: @baseLineHeight*2;
+    h1 {
+        .column(3);
+        .push(1);
+        font-size:@baseFontSize*2;
+        line-height:@baseLineHeight*1.5;
+    }
+    img {
+        .column(2);
+        .push(3);
+    }
 }
 #partnersList {
-    width:2000px;
     li {
+        .column(2);
         display:inline-block;
         background: @grayLighter;
         float:left;
         box-shadow:0px 0px 6px black;
         margin:@baseLineHeight*2;
         height:200px;
-
-
     }
 }
