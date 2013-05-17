@@ -12,7 +12,7 @@ var App = (function() {
     $rotation = $('.rotation'),
     $quality = $('.quality'),
     $format = $('.format')
-    $dimensions = $('.dimensions');
+    $dimensions = $('.dimensions'),
 
     var demoData = {
         titles: [
@@ -55,6 +55,7 @@ var App = (function() {
         $size.text(demoData.sizes[optionIndex]).hide().fadeIn(500);
         $rotation.text(demoData.rotations[optionIndex]).hide().fadeIn(500)
         $quality.text(demoData.quality[0]).hide().fadeIn(500);
+        $format.text(demoData.formats[optionIndex]).hide().fadeIn(500);
         $format.text(demoData.formats[optionIndex]).hide().fadeIn(500);
     }
 
