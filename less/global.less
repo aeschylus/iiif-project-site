@@ -49,6 +49,7 @@ a:-webkit-any-link {
     top:0;
     background:white;
     height:@baseLineHeight*2;
+    z-index:1;
     .menu-btn {
         float:right;
         display:none;
@@ -62,6 +63,7 @@ a:-webkit-any-link {
     position:fixed;
     top:0;
     right:@baseLineHeight;
+    z-index:2;
     li {
         float:left;
         padding:@baseLineHeight/2;
@@ -82,12 +84,12 @@ a:-webkit-any-link {
     }
 }
 .color-bar {
-  background: transparent url('../imgs/bg-spectrum.png') center top repeat-x;
-  height: 21px;
-  left: 0;
-  position: fixed;
-  top: @baseLineHeight*2;
-  width: 100%;
+    background: transparent url('../imgs/bg-spectrum.png') center top repeat-x;
+    height: 21px;
+    left: 0;
+    position: fixed;
+    top: @baseLineHeight*2;
+    width: 100%;
 }
 hr {
     width:100%;
@@ -97,27 +99,39 @@ hr {
     border-bottom:1px solid white;
 }
 #apiDemo {
-font-family: monospace;
-font-weight:bold;
-font-size:@baseFontSize*1.5;
-color: black;
+    font-family: monospace;
+    font-weight:bold;
+    font-size:@baseFontSize*1.5;
+    color: black;
 }
 #apiDemoArea {
     .clearfix();
-background: rgba(0,0,0,0.5);
-.box-shadow(0px 0px 10px black);
+    background: rgba(0,0,0,0.5);
+    .box-shadow(0px 0px 10px black);
+    color:white;
+    padding:@baseLineHeight*2;
+    .description {
+        .column(5);
+    }
 }
 
 img.apiDemo {
-    height:80%;
-    padding:@baseLineHeight*2;
+    max-height:65%;
+    max-width:45%;
     float:right;
+    border-left:2px solid white;
+    border-top:2px solid white;
+}
+.toph {
+    .push(3);
 }
 
 footer {
-    background: white;
     color:black;
     padding:@baseLineHeight*2 0;
+    height:auto;
+    .clearfix();
+    background-color:beige;
     h2, h3 {
         color:black;
     }
