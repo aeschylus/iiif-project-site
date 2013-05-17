@@ -12,7 +12,7 @@ var App = (function() {
     $rotation = $('.rotation'),
     $quality = $('.quality'),
     $format = $('.format')
-    $dimensions = $('.dimensions'),
+    $dimensions = $('.dimensions');
 
     var demoData = {
         titles: [
